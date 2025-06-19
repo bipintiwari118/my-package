@@ -128,7 +128,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M5 12h14M12 5l7 7-7 7"></path>
                         </svg>
-                        <span class="ml-4">Another Menu</span>
+                        <span class="ml-4">Menu</span>
                     </span>
                     <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd"
@@ -145,7 +145,7 @@
                         aria-label="submenu">
                         <li
                             class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                            <a href="#">Submenu item 1</a>
+                            <a href="{{ route('menu.create') }}">Add Menu</a>
                         </li>
                         <li
                             class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">

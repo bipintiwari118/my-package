@@ -12,6 +12,7 @@
         <script src="{{ asset('js/init-alpine.js') }}"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://cdn.tiny.cloud/1/gqz1lp9d4fn8iag58tlv3ti81kjeo6mdarsbwfiw0du5bu4o/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+        @yield('styles')
 </head>
 <body>
 <div

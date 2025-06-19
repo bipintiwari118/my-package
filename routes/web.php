@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItineararyController;
+use App\Http\Controllers\MenuController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/edit/itinearary/{id}', [ItineararyController::class, 'edit'])->name('itinearary.edit');
     Route::post('/edit/itinearary/{id}', [ItineararyController::class, 'update'])->name('itinearary.update');
     Route::get('/delete/itinearary/{id}', [ItineararyController::class, 'delete'])->name('itinearary.delete');
+
+
+
+     Route::get('/add/menu', [MenuController::class, 'create'])->name('menu.create');
+     Route::post('/add/menu', [MenuController::class, 'store'])->name('menu.store');
+     Route::get('/list/menu', [MenuController::class, 'list'])->name('menu.list');
+     Route::get('/edit/menu/{id}', [MenuController::class, 'edit'])->name('menu.edit');
+     Route::get('/delete/menu/{id}', [MenuController::class, 'delete'])->name('menu.delete');
+     Route::post('/menu/update-order', [MenuController::class, 'updateOrder'])->name('menu.updateOrder');
 
 });
 
