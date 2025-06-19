@@ -20,7 +20,7 @@ class MenuController extends Controller
             'url'=>$request->url,
         ]);
 
-        return redirect()->route('menu.create')->with('success','Menu Created Successfully.');
+        return redirect()->route('menu.list')->with('success','Menu Created Successfully.');
     }
 
     public function list(){
@@ -40,5 +40,33 @@ class MenuController extends Controller
 
                 return response()->json(['success' => true]);
 }
+
+
+public function edit($id){
+    $menus=Menu::all();
+    $menu=Menu::findOrFail($id);
+     return view('admin.menu.edit',compact('menu','menus'));
+
+}
+
+public function update(Request $request,$id){
+    $menu=Menu::findOrFail($id);
+    $menu->update([
+           'name'=>$request->name,
+            'parent_id'=>$request->parent_id,
+            'url'=>$request->url,
+    ]);
+
+     return redirect()->route('menu.list')->with('success','Menu Updated Successfully.');
+}
+
+
+public function delete($id){
+     $menu=Menu::findOrFail($id);
+     $menu->delete();
+     return redirect()->route('menu.list')->with('success','Menu Deleted Successfully.');
+
+}
+
 
 }

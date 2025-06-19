@@ -54,7 +54,7 @@
         }
     @endphp
 
-    <div class="py-4">
+    <div class="pb-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
@@ -64,7 +64,7 @@
                                 {{ Session::get('success') }}
                             </div>
                         @endif
-                        <div class="pb-[100px]">
+                        <div class="pb-[50px]">
                             <a href="{{ route('menu.create') }}"
                                 class="inline-block float-right px-4 py-2 mb-[10px] mr-[20px] text-sm font-medium text-white bg-green-600 rounded hover:bg-green-800">
                                 Add New
