@@ -73,6 +73,36 @@
                 display: none !important;
             }
         }
+
+        @media (max-width: 768px) {
+            ul.main-menu {
+                display: none !important;
+            }
+
+            #mobile-menu {
+                display: block;
+                background-color: #f9fafb;
+                /* light gray background */
+            }
+
+            .mobile-submenu {
+                background-color: #f3f4f6;
+                /* slightly darker for nested submenu */
+                border-left: 2px solid #e5e7eb;
+                margin-left: 0.5rem;
+                padding-left: 0.5rem;
+            }
+
+            /* .mobile-toggle {
+                background-color: #e5e7eb;
+                border-radius: 0.25rem;
+            } */
+
+            .mobile-toggle:hover {
+                background-color: #d1d5db;
+                 /* darker on hover */
+            }
+        }
     </style>
 </head>
 
