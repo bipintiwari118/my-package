@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Itinerary List') }}
+        {{ __('Menu List') }}
     </x-slot>
     @section('styles')
         <style>

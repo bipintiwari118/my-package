@@ -17,9 +17,7 @@ use App\Http\Controllers\MenuController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/',[MenuController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -8,6 +8,21 @@ use App\Models\Menu;
 
 class MenuController extends Controller
 {
+
+
+public function index()
+{
+    $menus = Menu::orderBy('parent_id')->orderBy('id')->get();
+
+    $parents = $menus->whereNull('parent_id');
+    $groupedChildren = $menus->whereNotNull('parent_id')->groupBy('parent_id');
+
+    return view('frontend.index', compact('parents', 'groupedChildren'));
+}
+
+
+
+
     public function create(){
         $menus=Menu::all();
         return view('admin.menu.add',compact('menus'));
