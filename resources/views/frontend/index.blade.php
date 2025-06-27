@@ -12,7 +12,7 @@
         .submenu-right {
             display: none;
             position: absolute;
-            min-width: 250px;
+            min-width: 220px;
             z-index: 50;
             border-radius: 0.25rem;
             background-color: white;
@@ -23,18 +23,16 @@
             top: 100%;
             left: 0;
             margin-top: 0.5rem;
-            padding: 10px;
         }
 
         .submenu-right {
             top: 0;
-            left: 105%;
+            left: 100%;
             margin-left: 0.25rem;
-            padding: 5px;
         }
 
         .caret {
-            margin-left: 0.6rem;
+            margin-left: 0.4rem;
             transition: transform 0.3s ease;
             stroke: currentColor;
             stroke-width: 2;
@@ -65,86 +63,73 @@
 
             #mobile-menu {
                 display: block;
-            }
-
-            .submenu,
-            .submenu-right {
-                position: relative !important;
-                display: none !important;
-            }
-        }
-
-        @media (max-width: 768px) {
-            ul.main-menu {
-                display: none !important;
-            }
-
-            #mobile-menu {
-                display: block;
-                background-color: #f9fafb;
-                /* light gray background */
+                background-color: white;
             }
 
             .mobile-submenu {
-                background-color: #f3f4f6;
-                /* slightly darker for nested submenu */
+                background-color: white;
                 border-left: 2px solid #e5e7eb;
                 margin-left: 0.5rem;
                 padding-left: 0.5rem;
             }
 
-            /* .mobile-toggle {
-                background-color: #e5e7eb;
+            .mobile-toggle {
+                background-color: #f1f5f9;
+                color: #1f2937;
                 border-radius: 0.25rem;
-            } */
+            }
 
             .mobile-toggle:hover {
-                background-color: #d1d5db;
-                 /* darker on hover */
+                background-color: #e2e8f0;
             }
         }
     </style>
 </head>
 
 <body class="bg-white">
-
-    <nav class="bg-white shadow sticky top-0 z-50 w-full">
+    <nav class="bg-blue-600 shadow sticky top-0 z-50 w-full">
         <div class="max-w-7xl mx-auto px-4 flex items-center h-16 justify-between w-full">
+            <!-- Logo -->
             <div>
-                <a href="#" class="text-xl font-bold text-blue-600">MyLogo</a>
+                <a href="#" class="text-xl font-bold text-white">MyLogo</a>
             </div>
 
+            <!-- Desktop Menu -->
             <div class="flex-1 flex justify-end">
-                <ul class="main-menu flex space-x-6 font-medium text-gray-700">
+                <ul class="main-menu flex space-x-6 font-medium text-white">
                     @php
                         function renderMenu($items, $groupedChildren, $level = 0)
                         {
                             foreach ($items as $item) {
                                 $hasChildren = isset($groupedChildren[$item->id]);
                                 echo '<li class="menu-item relative group">';
-
+                                $textColor =
+                                    $level === 0 ? 'text-white hover:text-gray-200' : 'text-black hover:text-blue-600';
                                 if ($hasChildren) {
-                                    $caretClass = $level === 0 ? 'caret caret-down' : 'caret caret-down';
-                                    echo '<button type="button" class="flex items-center w-full hover:text-blue-600 focus:outline-none px-4 py-2">' .
+                                    $caretClass = $level === 0 ? 'caret caret-down' : 'caret caret-right';
+                                    echo '<a href="#" class="flex items-center w-full px-4 py-2 ' .
+                                        $textColor .
+                                        '">' .
                                         $item->name .
                                         '<svg class="' .
                                         $caretClass .
                                         '" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
                           <path d="M6 9l6 6 6-6" />
                         </svg>
-                      </button>';
+                      </a>';
                                     $submenuClass = $level === 0 ? 'submenu' : 'submenu-right';
-                                    echo '<ul class="' . $submenuClass . ' rounded shadow-lg">';
+                                    echo '<ul class="' . $submenuClass . '">';
                                     renderMenu($groupedChildren[$item->id], $groupedChildren, $level + 1);
                                     echo '</ul>';
                                 } else {
                                     echo '<a href="' .
                                         $item->url .
-                                        '" class="block px-4 py-2 hover:text-blue-600">' .
+                                        '" class="block px-4 py-2 ' .
+                                        $textColor .
+                                        '">' .
                                         $item->name .
                                         '</a>';
                                 }
-
                                 echo '</li>';
                             }
                         }
@@ -153,14 +138,16 @@
                 </ul>
             </div>
 
-            <button id="menu-btn" class="md:hidden focus:outline-none text-gray-700 ml-4">
+            <!-- Mobile Toggle -->
+            <button id="menu-btn" class="md:hidden focus:outline-none text-white ml-4">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
         </div>
 
-        <div id="mobile-menu" class="bg-white shadow-md px-4 pt-4 pb-6 md:hidden hidden">
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="shadow-md px-4 pt-4 pb-6 md:hidden hidden">
             @php
                 function renderMobileMenu($items, $groupedChildren, $level = 0)
                 {
@@ -168,19 +155,19 @@
                         $hasChildren = isset($groupedChildren[$item->id]);
                         echo '<div class="mb-1">';
                         if ($hasChildren) {
-                            echo '<button type="button" class="mobile-toggle flex justify-between items-center w-full px-4 py-2 text-gray-700 hover:text-blue-600 focus:outline-none">' .
+                            echo '<a href="#" class="mobile-toggle flex justify-between items-center w-full px-4 py-2">' .
                                 $item->name .
                                 '<svg class="caret caret-down" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
                         <path d="M6 9l6 6 6-6" />
                     </svg>
-                </button>';
+                </a>';
                             echo '<div class="mobile-submenu hidden pl-4">';
                             renderMobileMenu($groupedChildren[$item->id], $groupedChildren, $level + 1);
                             echo '</div>';
                         } else {
                             echo '<a href="' .
                                 $item->url .
-                                '" class="block px-4 py-2 text-gray-700 hover:text-blue-600">' .
+                                '" class="block px-4 py-2 hover:text-blue-600">' .
                                 $item->name .
                                 '</a>';
                         }
@@ -201,32 +188,32 @@
             $('.menu-item').hover(
                 function() {
                     $(this).children('.submenu').stop(true, true).fadeIn(150);
-                    $(this).children('button').find('.caret-down').addClass('caret-up');
+                    $(this).children('a').find('.caret-down').addClass('caret-up');
                 },
                 function() {
                     $(this).children('.submenu').stop(true, true).fadeOut(150);
-                    $(this).children('button').find('.caret-down').removeClass('caret-up');
+                    $(this).children('a').find('.caret-down').removeClass('caret-up');
                 }
             );
 
             $('.submenu li.menu-item').hover(
                 function() {
                     $(this).children('.submenu-right').stop(true, true).fadeIn(150);
-                    $(this).children('button').find('.caret-down').addClass('caret-left');
+                    $(this).children('a').find('.caret-right').addClass('caret-left');
                 },
                 function() {
                     $(this).children('.submenu-right').stop(true, true).fadeOut(150);
-                    $(this).children('button').find('.caret-down').removeClass('caret-left');
+                    $(this).children('a').find('.caret-right').removeClass('caret-left');
                 }
             );
 
-            $('.mobile-toggle').click(function() {
+            $('.mobile-toggle').click(function(e) {
+                e.preventDefault();
                 $(this).next('.mobile-submenu').slideToggle();
                 $(this).find('.caret').toggleClass('caret-up');
             });
         });
     </script>
-
 </body>
 
 </html>

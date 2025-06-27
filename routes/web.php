@@ -5,6 +5,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItineararyController;
 use App\Http\Controllers\MenuController;
+use UniSharp\LaravelFilemanager\Lfm;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\MediaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +53,27 @@ Route::middleware('auth')->group(function () {
      Route::get('/delete/menu/{id}', [MenuController::class, 'delete'])->name('menu.delete');
      Route::post('/menu/update-order', [MenuController::class, 'updateOrder'])->name('menu.updateOrder');
      Route::post('/edit/menu/{id}', [MenuController::class, 'update'])->name('menu.update');
+
+
+
+
+     //for file manager use blog
+
+     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web']], function () {
+    Lfm::routes();
+});
+
+     Route::get('/add/blog', [BlogController::class, 'create'])->name('blog.create');
+     Route::post('/add/blog', [BlogController::class, 'store'])->name('blog.store');
+
+
+
+
+     //for media
+
+     Route::get('/media/modal', [MediaController::class, 'modal'])->name('media.modal');
+     Route::post('/media/upload', [MediaController::class, 'upload'])->name('media.upload');
+     Route::delete('/media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
 
 });
 

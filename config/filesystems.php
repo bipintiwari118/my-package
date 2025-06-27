@@ -56,6 +56,23 @@ return [
             'throw' => false,
         ],
 
+
+        
+
+        'featured_images' => [
+        'driver' => 'local',
+        'root' => storage_path('app/blog/featured_image'),
+        'url' => env('APP_URL') . '/storage/blog/featured_image',
+        'visibility' => 'public',
+    ],
+
+    'editor_images' => [
+        'driver' => 'local',
+        'root' => storage_path('app/blog/editor'),
+        'url' => env('APP_URL') . '/storage/blog/editor',
+        'visibility' => 'public',
+    ],
+
     ],
 
     /*
