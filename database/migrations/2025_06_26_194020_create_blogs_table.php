@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('featured_image')->nullable();
-            $table->longText('description');
+            $table->longText('description')->nullable();
+            $table->json('gallery_images')->nullable();
             $table->timestamps();
         });
     }

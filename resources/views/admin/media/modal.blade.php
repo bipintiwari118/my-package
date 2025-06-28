@@ -98,15 +98,17 @@
     @section('scripts')
         <script>
             function selectMedia(url) {
-                if (window.opener && !window.opener.closed) {
-                    window.opener.selectMedia(url);
-                    window.close();
-                }
-
-                if (window.opener && window.opener.tinyMCEImageCallback) {
+                // 1. If opened from TinyMCE, insert image inside editor only
+                if (window.opener && typeof window.opener.tinyMCEImageCallback === 'function') {
                     window.opener.tinyMCEImageCallback(url);
                     window.close();
                     return;
+                }
+
+                // 2. If opened from Featured Image, set preview + hidden input
+                if (window.opener && typeof window.opener.selectFeaturedImage === 'function') {
+                    window.opener.selectFeaturedImage(url);
+                    window.close();
                 }
             }
 

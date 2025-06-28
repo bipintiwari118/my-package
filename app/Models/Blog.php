@@ -9,5 +9,10 @@ class Blog extends Model
 {
     use HasFactory;
 
-      protected $fillable = ['title', 'featured_image', 'description'];
+      protected $fillable = ['title', 'featured_image','gallery_images', 'description'];
+
+
+       protected $casts = [
+        'gallery_images' => 'array',  // cast JSON to array
+    ];
 }
