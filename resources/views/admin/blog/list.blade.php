@@ -45,8 +45,6 @@
                         <tr class="bg-gray-800 text-white text-left text-sm uppercase font-semibold tracking-wider">
                             <th class="px-5 py-3">Id</th>
                             <th class="px-5 py-3">Title</th>
-                            <th class="px-5 py-3">Category</th>
-                            <th class="px-5 py-3">Status</th>
                             <th class="px-5 py-3">Image</th>
                             <th class="px-5 py-3 text-center">Action</th>
                         </tr>
@@ -61,34 +59,33 @@
                                     </td>
                                     <td class="px-5 py-5 text-sm">
                                         <p class="text-gray-900 whitespace-no-wrap  text-[20px]">
-                                            <a href="{{ url('blog/' . $blog->slug) }}"
+                                            <a href="{{ url('blog/' . $blog->id) }}"
                                                 class="hover:underline hover:decoration-green-500">
                                                 {{ \Illuminate\Support\Str::limit($blog->title, 20, '...') }}
                                             </a>
                                         </p>
                                     </td>
                                     <td class="px-5 py-5 text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ $blog->category }}</p>
-                                    </td>
-                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-[16px]">
-                                        <span
-                                            class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
-                                            {{ $blog->status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                            {{ ucfirst($blog->status) }}
-                                        </span>
-                                    </td>
-                                    <td class="px-5 py-5 text-sm">
-                                        @if ($blog->featured_image && isset($blog->featured_image['path']))
-                                            <img src="{{ asset($blog->featured_image['path']) ?? 'default.jpg' }}"
-                                                alt="{{ $blog->featured_image['alt'] ?? 'Blog Image' }}" srcset=""
-                                                class="w-[50px] h-[50px]" title="{{ $blog->featured_image['title'] ?? $blog->title }}">
+                                        @php
+                                            $featured = $blog->featured_image;
+                                        @endphp
+
+                                        @if (!empty($featured['url']))
+                                            <img src="{{ asset($featured['url']) }}"
+                                                alt="{{ $featured['alt'] ?? 'Blog Image' }}"
+                                                title="{{ $featured['title'] ?? $blog->title }}"
+                                                class="w-[50px] h-[50px] object-cover rounded">
+                                        @else
+                                            <img src="{{ asset('default.jpg') }}" alt="Default Image"
+                                                title="Default Image" class="w-[50px] h-[50px] object-cover rounded">
                                         @endif
+
                                     </td>
 
                                     <td class="px-5 py-5 text-sm text-center">
-                                        <a href="{{ route('blog.edit', $blog->slug) }}"
+                                        <a href="{{ route('blog.edit', $blog->id) }}"
                                             class="text-blue-500 hover:text-blue-700 font-bold mr-2">Edit</a>
-                                        <a href="{{ route('blog.delete', $blog->slug) }}"
+                                        <a href="{{ route('blog.delete', $blog->id) }}"
                                             class="text-red-500 hover:text-red-700 font-bold"
                                             onclick="alert('Are you sure to delete this Blog.')">Delete</a>
                                     </td>

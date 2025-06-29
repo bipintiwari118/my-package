@@ -16,22 +16,25 @@ class BlogController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            'featured_image' => 'nullable|string',
-            'description' => 'nullable'
+            'featured_image' =>'nullable',
+            'description' => 'nullable',
+            'gallery_images'=>'nullable',
         ]);
 
         Blog::create([
             'title' => $request->title,
-            'featured_image' => $request->featured_image,
-            'description' => $request->description,
-            'gallery_images' => $request->gallery_images
+        'featured_image' => json_decode($request->featured_image, true),
+        'description' => $request->description,
+        'gallery_images' => is_array($request->gallery_images)
+                            ? $request->gallery_images
+                            : json_decode($request->gallery_images, true),
         ]);
 
-        return redirect()->route('blog.create')->with('success', 'Blog created!');
+        return redirect()->route('blog.list')->with('success', 'Blog created!');
     }
 
     public function list(){
         $blogs=Blog::latest()->paginate(10);
-        return view('admin.blog.list',compact())
+        return view('admin.blog.list',compact('blogs'));
     }
 }

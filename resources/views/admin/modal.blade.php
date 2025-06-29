@@ -85,8 +85,14 @@
 
                     <div
                         class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-opacity">
-                        <button onclick="selectMedia('{{ $file->url }}')"
-                            class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 text-sm rounded">
+                        <button
+                            onclick="selectMedia(
+                            '{{ $file->url }}',
+                            '{{ $file->alt ?? '' }}',
+                            '{{ $file->title ?? '' }}',
+                            '{{ $file->description ?? '' }}')"
+                            class="bg-green-600
+                            hover:bg-green-700 text-white px-3 py-1 text-sm rounded">
                             Select
                         </button>
                         <form action="{{ route('media.destroy', $file->id) }}" method="POST"
@@ -108,9 +114,15 @@
         </div>
     </div>
     <script>
-        function selectMedia(url) {
+        function selectMedia(url, alt = '', title = '', description = '') {
             if (window.opener && !window.opener.closed) {
-                window.opener.selectMedia(url);
+                const imageData = {
+                    url: url,
+                    alt: alt,
+                    title: title,
+                    description: description,
+                };
+                window.opener.selectMedia(imageData);
                 window.close();
             }
         }

@@ -14,5 +14,6 @@ class Blog extends Model
 
        protected $casts = [
         'gallery_images' => 'array',  // cast JSON to array
+        'featured_image' => 'array',
     ];
 }

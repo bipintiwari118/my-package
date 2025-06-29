@@ -17,6 +17,9 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
             <input type="text" name="title"
                 class="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            @error('title')
+                <div class="text-red-500 text-sm mt-1 ml-3">{{ $message }}</div>
+            @enderror
         </div>
 
         <!-- Featured Image Picker -->
@@ -48,6 +51,7 @@
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
             <textarea name="description" id="editor" rows="10" class="w-full border border-gray-300 rounded px-4 py-2"></textarea>
+          
         </div>
 
         <div>
@@ -98,7 +102,7 @@
 
 
             // Store selected gallery images
-            let galleryUrls = [];
+            let galleryImages = [];
 
             function openGalleryModal() {
                 window.selectingGallery = true;
@@ -109,32 +113,32 @@
                 window.open("{{ route('media.modal') }}", "FileManager", "width=1000,height=700");
             }
 
-            function selectMedia(url) {
+            function selectMedia(data) {
                 // This is called by the modal for both TinyMCE and Featured Image
-
-                // If the image was selected from TinyMCE
+                // 1. For TinyMCE Editor
                 if (typeof window.tinyMCEImageCallback === 'function') {
-                    window.tinyMCEImageCallback(url); // Insert image in TinyMCE editor
-                    window.tinyMCEImageCallback = null; // Reset so it doesn't conflict next time
+                    window.tinyMCEImageCallback(data.url);
+                    window.tinyMCEImageCallback = null;
                     return;
                 }
-
 
                 // 2. Gallery image selection
                 if (window.selectingGallery) {
-                    galleryUrls.push(url);
+                    galleryImages.push(data);
                     renderGalleryPreviews();
-                    document.getElementById('gallery_images').value = JSON.stringify(galleryUrls);
+                    document.getElementById('gallery_images').value = JSON.stringify(galleryImages);
                     return;
                 }
 
-                document.getElementById('featured_image').value = url;
+                document.getElementById('featured_image').value = JSON.stringify(data);
 
                 // Update preview image below the box
                 const previewImg = document.getElementById('featured-preview-img');
                 const previewContainer = document.getElementById('featured-preview-container');
 
-                previewImg.src = url;
+                previewImg.src = data.url;
+                previewImg.alt = data.alt ?? '';
+                previewImg.title = data.title ?? '';
                 previewContainer.classList.remove('hidden');
 
             }
@@ -148,22 +152,23 @@
 
             function renderGalleryPreviews() {
                 const previewDiv = document.getElementById('gallery-preview');
-                previewDiv.innerHTML = galleryUrls.map(url => `
-            <div class="relative group">
-                <img src="${url}" class="rounded shadow object-cover w-full h-32">
-                <button type="button"
-                        class="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white text-xs px-2 py-1 rounded"
-                        onclick="removeGalleryImage('${url}')">
-                    &times;
-                </button>
-            </div>
-        `).join('');
+                previewDiv.innerHTML = galleryImages.map(img => `
+        <div class="relative group">
+            <img src="${img.url}" class="rounded shadow object-cover w-full h-32" alt="${img.alt}" title="${img.title}">
+            <button type="button"
+                    class="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white text-xs px-2 py-1 rounded"
+                    onclick="removeGalleryImage('${img.url}')">
+                &times;
+            </button>
+        </div>
+    `).join('');
             }
 
             function removeGalleryImage(url) {
-                galleryUrls = galleryUrls.filter(img => img !== url);
+                galleryImages = galleryImages.filter(img => img.url !== url);
                 renderGalleryPreviews();
-                document.getElementById('gallery_images').value = JSON.stringify(galleryUrls);
+                document.getElementById('gallery_images').value = JSON.stringify(galleryImages);
+
             }
         </script>
     @endsection
