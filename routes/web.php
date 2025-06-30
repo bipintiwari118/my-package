@@ -67,6 +67,7 @@ Route::middleware('auth')->group(function () {
      Route::post('/add/blog', [BlogController::class, 'store'])->name('blog.store');
      Route::get('/list/blog', [BlogController::class, 'list'])->name('blog.list');
      Route::get('/edit/{id}', [BlogController::class, 'edit'])->name('blog.edit');
+     Route::post('/edit/{id}', [BlogController::class, 'update'])->name('blog.update');
      Route::get('/delete/{id}', [BlogController::class, 'delete'])->name('blog.delete');
 
 

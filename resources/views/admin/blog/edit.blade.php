@@ -1,8 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Itinearary') }}
+        {{ __('Update Blog') }}
     </x-slot>
-    <form action="{{ route('blog.store') }}" method="POST"
+
+    <div class="text-left">
+        <a href="{{ route('blog.list') }}"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow">
+            back
+        </a>
+    </div>
+    <form action="{{ route('blog.update', $blog->id) }}" method="POST"
         class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg space-y-6">
         @csrf
         @if (Session::has('success'))
@@ -10,12 +17,12 @@
                 {{ Session::get('success') }}
             </div>
         @endif
-        <h2 class="text-2xl font-bold text-gray-800">Create New Blog Post</h2>
+        <h2 class="text-2xl font-bold text-gray-800">Edit Blog Post</h2>
 
         <!-- Blog Title -->
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
-            <input type="text" name="title"
+            <input type="text" name="title" value="{{ $blog->title }}"
                 class="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
             @error('title')
                 <div class="text-red-500 text-sm mt-1 ml-3">{{ $message }}</div>
@@ -50,7 +57,7 @@
         <!-- Blog Description (TinyMCE) -->
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <textarea name="description" id="editor" rows="10" class="w-full border border-gray-300 rounded px-4 py-2"></textarea>
+            <textarea name="description" id="editor" rows="10" class="w-full border border-gray-300 rounded px-4 py-2">{!! $blog->description !!}</textarea>
 
         </div>
 
@@ -74,7 +81,7 @@
         <div class="text-right">
             <button type="submit"
                 class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow">
-                Publish Blog
+                Update Blog
             </button>
         </div>
     </form>
@@ -170,6 +177,33 @@
                 document.getElementById('gallery_images').value = JSON.stringify(galleryImages);
 
             }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const featured = @json($blog->featured_image);
+                if (featured && featured.url) {
+                    // Set the hidden input value
+                    document.getElementById('featured_image').value = JSON.stringify(featured);
+
+                    // Show the preview
+                    const previewImg = document.getElementById('featured-preview-img');
+                    previewImg.src = featured.url;
+                    previewImg.alt = featured.alt ?? '';
+                    previewImg.title = featured.title ?? '';
+
+                    document.getElementById('featured-preview-container').classList.remove('hidden');
+                }
+
+                // Show gallery images if available
+                let rawImages = @json($blog->gallery_images ?? []);
+
+                // Convert JSON strings to objects if needed
+                galleryImages = rawImages.map(img =>
+                    typeof img === 'string' ? JSON.parse(img) : img
+                );
+
+                renderGalleryPreviews();
+                document.getElementById('gallery_images').value = JSON.stringify(galleryImages);
+            });
         </script>
     @endsection
 
