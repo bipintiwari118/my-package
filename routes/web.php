@@ -77,6 +77,7 @@ Route::middleware('auth')->group(function () {
      Route::get('/media/modal', [MediaController::class, 'modal'])->name('media.modal');
      Route::post('/media/upload', [MediaController::class, 'upload'])->name('media.upload');
      Route::delete('/media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
+     Route::put('/media/{id}', [MediaController::class, 'update'])->name('media.update');
 
 });
 

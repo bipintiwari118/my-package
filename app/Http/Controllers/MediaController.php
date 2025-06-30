@@ -49,4 +49,22 @@ public function destroy(Media $media)
     $media->delete();
     return redirect()->back();
 }
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'alt' => 'nullable|string',
+        'title' => 'nullable|string',
+        'description' => 'nullable|string',
+    ]);
+
+    $media = Media::findOrFail($id);
+    $media->alt = $request->alt;
+    $media->title = $request->title;
+    $media->description = $request->description;
+    $media->save();
+
+    return redirect()->back()->with('success', 'Media metadata updated!');
+}
+
 }

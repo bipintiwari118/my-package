@@ -102,6 +102,12 @@
                                 Delete
                             </button>
                         </form>
+
+                        <button
+                            onclick="openEditModal('{{ $file->id }}', '{{ $file->url }}', '{{ $file->alt ?? '' }}', '{{ $file->title ?? '' }}', '{{ $file->description ?? '' }}')"
+                            class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 text-sm rounded">
+                            Edit
+                        </button>
                     </div>
                 </div>
             @empty
@@ -111,6 +117,40 @@
 
         <div class="mt-6">
             {{ $media->links() }}
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden justify-center items-center">
+        <div class="bg-white p-6 rounded-lg w-full max-w-lg relative">
+            <button onclick="closeEditModal()"
+                class="absolute top-2 right-3 text-xl text-gray-700 hover:text-black">&times;</button>
+            <form id="editMediaForm" method="POST">
+                @csrf
+                @method('PUT')
+
+                <input type="hidden" name="id" id="edit-id">
+                <img id="edit-img-preview" src="" class="w-full h-40 object-cover rounded mb-4">
+
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700">Alt Text</label>
+                    <input type="text" name="alt" id="edit-alt" class="w-full border rounded px-3 py-2">
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700">Title</label>
+                    <input type="text" name="title" id="edit-title" class="w-full border rounded px-3 py-2">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea name="description" id="edit-description" rows="2" class="w-full border rounded px-3 py-2"></textarea>
+                </div>
+
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                    Update Media
+                </button>
+            </form>
         </div>
     </div>
     <script>
@@ -145,6 +185,23 @@
             document.getElementById('media-meta-fields').classList.add('hidden');
             document.getElementById('file-preview').classList.add('hidden');
             document.getElementById('fileInput').value = '';
+        }
+
+        function openEditModal(id, url, alt, title, description) {
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-img-preview').src = url;
+            document.getElementById('edit-alt').value = alt;
+            document.getElementById('edit-title').value = title;
+            document.getElementById('edit-description').value = description;
+
+            document.getElementById('editMediaForm').action = `/media/${id}`; // Laravel route for PUT
+            document.getElementById('edit-modal').classList.remove('hidden');
+            document.getElementById('edit-modal').classList.add('flex');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.remove('flex');
+            document.getElementById('edit-modal').classList.add('hidden');
         }
     </script>
 </body>
